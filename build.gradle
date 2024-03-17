@@ -1,3 +1,5 @@
+import nu.studer.gradle.jooq.JooqEdition
+
 buildscript {
     ext {
         restdocsApiSpecVersion = '0.18.2'
@@ -12,6 +14,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.2'
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}" //RestDocs
     id 'org.hidetake.swagger.generator' version '2.19.2' //SwaggerUI
+    id 'nu.studer.jooq' version '7.1.1'
 }
 
 group = 'com.commerce'
@@ -116,6 +119,12 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    jooqGenerator 'org.jooq:jooq-codegen:3.17.4'
+    jooqGenerator 'org.jooq:jooq-meta-extensions:3.17.4'
+    jooqGenerator 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    jooqGenerator 'mysql:mysql-connector-java:8.0.33'
 }
 
 test {
@@ -182,3 +191,42 @@ bootJar {
     dependsOn(':copyDocs')
 }
 
+jooq {
+    version = dependencyManagement.importedProperties['jooq.version']
+    edition = JooqEdition.OSS
+
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.ERROR
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.extensions.ddl.DDLDatabase' // DDLDatabase 사용
+                        properties {
+                            // DDL 스크립트 파일 위치 지정
+                            property {
+                                key = 'scripts'
+                                value = 'src/main/resources/db/my-ddl.sql'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                        javaTimeTypes = true
+                    }
+                    target {
+                        packageName = 'com.commerce.backendserver'
+                        directory = 'src/main/generated/jooq'
+                    }
+                    strategy {
+                        name = 'org.jooq.codegen.example.JPrefixGeneratorStrategy'
+                    }
+                }
+            }
+        }
+    }
+}

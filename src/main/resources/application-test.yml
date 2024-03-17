@@ -1,0 +1,72 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:db/my-ddl.sql
+      data-locations: classpath:db/data.sql
+      mode: always
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  oauth:
+    kakao:
+      authorization-endpoint: authorization-endpoint
+      token-endpoint: token-endpoint
+      userinfo-endpoint: userinfo-endpoint
+      client-id: client-id
+      client-secret: client-secret
+      redirect-uri: redirect-uri
+      scope: scope
+    google:
+      authorization-endpoint: authorization-endpoint
+      token-endpoint: token-endpoint
+      userinfo-endpoint: userinfo-endpoint
+      client-id: client-id
+      client-secret: client-secret
+      redirect-uri: redirect-uri
+      scope: scope
+
+jwt:
+  secret:
+    key: abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc
+  access-token-validity: 90000
+  refresh-token-validity: 900000
+
+front-end:
+  login-success:
+    redirect-uri: https://front-end/redirect-uri
+
+server:
+  domain: https://test.commerce.com
+
+local:
+  server:
+    port: 8080
+
+#NCP Object Storage
+cloud:
+  aws:
+    credentials:
+      access-key: access-key
+      secret-key: secret-key
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    s3:
+      endpoint: endpoint
+      bucket: bucket

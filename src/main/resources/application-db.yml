@@ -1,0 +1,77 @@
+spring:
+  datasource:
+    url: jdbc:mysql://commerce.chuyhzcarwpe.ap-northeast-2.rds.amazonaws.com/commerce?serverTimezone=Asia/Seoul
+    username: root
+    password: 1q2w3e4r!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 1000
+        default_batch_fetch_size: 1000
+    hibernate:
+      ddl-auto: update
+      jdbc:
+        time_zone: Asia/Seoul
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  oauth:
+    kakao:
+      authorization-endpoint: https://kauth.kakao.com/oauth/authorize
+      token-endpoint: https://kauth.kakao.com/oauth/token
+      userinfo-endpoint: https://kapi.kakao.com/v2/user/me
+      client-id: e52397dfc0f1530fa23595d799dca654
+      client-secret: 3DqxT70CI45yr3kIwcA7iKHo6RsrQe2v
+      redirect-uri: http://www.rheefine.com:8080/login/oauth2/code/kakao
+      scope: profile_nickname, account_email
+    google:
+      authorization-endpoint: https://accounts.google.com/o/oauth2/v2/auth
+      token-endpoint: https://oauth2.googleapis.com/token
+      userinfo-endpoint: https://openidconnect.googleapis.com/v1/userinfo
+      client-id: 1053658400701-ppctge33gphkrf9hg33gv2cg2a6sgkjj.apps.googleusercontent.com
+      client-secret: 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
+      redirect-uri: http://www.rheefine.com:8080//login/oauth2/code/google
+      scope: profile, email
+
+jwt:
+  secret:
+    key: aaccaabbbbbbbbcccccccddddddddeeeeeeefffffgghh
+  access-token-validity: 1200000  #5분
+  refresh-token-validity: 1209600000  #14일
+
+server:
+  domain: http://www.rheefine.com:8080
+
+front-end:
+  login-success:
+    redirect-uri: https://teamcommerce.vercel.app
+
+#SwaggerUI
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    url: /commerce.json
+    path: /swagger
+
+#NCP Object Storage
+cloud:
+  aws:
+    credentials:
+      access-key: JLklhMmRUiDKcPnwPpIW
+      secret-key: soatlN0tZppOuzCoIWjLi88hDIJRBPVXuLYP3eA5
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    s3:
+      endpoint: https://kr.object.ncloudstorage.com
+      bucket: commerce-bucket

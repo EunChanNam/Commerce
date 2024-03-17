@@ -1,6 +1,4 @@
 HELP.md
-application*.yml
-/src/main/resources/README.md
 .gradle
 .DS_Store
 build/

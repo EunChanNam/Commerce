@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    group:
+      test:
+        - test
+      dev:
+        - dev
+      db:
+        - db
+    default: dev
